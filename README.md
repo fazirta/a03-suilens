@@ -26,8 +26,8 @@ LENS_ID=$(curl -s http://localhost:3001/api/lenses | jq -r '.[0].id')
 curl -X POST http://localhost:3002/api/orders \
   -H "Content-Type: application/json" \
   -d '{
-    "customerName": "Budi Santoso",
-    "customerEmail": "budi@example.com",
+    "customerName": "Muhammad Fazil Tirtana",
+    "customerEmail": "2306274983@gmail.com",
     "lensId": "'"$LENS_ID"'",
     "startDate": "2025-03-01",
     "endDate": "2025-03-05"

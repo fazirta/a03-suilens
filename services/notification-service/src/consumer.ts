@@ -1,6 +1,7 @@
 import amqplib from "amqplib";
 import { db } from "./db";
 import { notifications } from "./db/schema";
+import { broadcastToClients } from "./ws";
 
 const RABBITMQ_URL =
   process.env.RABBITMQ_URL || "amqp://guest:guest@localhost:5672";
@@ -39,6 +40,13 @@ export async function startConsumer() {
               type: "order_placed",
               recipient: customerEmail,
               message: `Hi ${customerName}, your rental order for ${lensName} has been placed successfully. Order ID: ${orderId}`,
+            });
+
+            // Broadcast to WebSocket clients
+            broadcastToClients({
+              event: "order.placed",
+              timestamp: new Date().toISOString(),
+              data: { orderId, customerName, customerEmail, lensName },
             });
 
             console.log(`Notification recorded for order ${orderId}`);
