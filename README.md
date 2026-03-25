@@ -63,13 +63,13 @@ Dokumentasi ini menampilkan seluruh endpoint, request body, response, dan schema
 
 WebSocket diimplementasikan pada notification-service untuk memberikan notifikasi secara realtime ke frontend ketika order baru dibuat.
 
-Alur:
+Alur proses:
 
-1. User melakukan POST order
+1. User melakukan POST order melalui frontend
 2. order-service mengirim event ke RabbitMQ
-3. notification-service menerima event
-4. notification-service mengirim notifikasi via WebSocket
-5. frontend menerima notifikasi tanpa refresh
+3. notification-service menerima event dari RabbitMQ
+4. notification-service mengirim notifikasi melalui WebSocket
+5. frontend menerima notifikasi tanpa perlu refresh halaman
 
 Pengujian dilakukan menggunakan smoke test pada README suilens dengan:
 
@@ -80,7 +80,17 @@ customerEmail = [2306274983@gmail.com](mailto:2306274983@gmail.com)
 
 ```
 
-Setelah POST order, notifikasi langsung muncul pada frontend.
+### Sebelum melakukan POST order
+
+![websocket-before](docs/websocket-before.png)
+
+Pada kondisi ini belum ada notifikasi, namun koneksi WebSocket sudah aktif.
+
+### Setelah melakukan POST order
+
+![websocket-after](docs/websocket-after.png)
+
+Setelah order dibuat, notifikasi langsung muncul pada frontend tanpa reload halaman, menandakan WebSocket berhasil berjalan dengan benar.
 
 ---
 
